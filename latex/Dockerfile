@@ -38,7 +38,7 @@ ENV LC_ALL en_US.UTF-8
 # Install packedes into the image
 RUN apt-get -y install texlive-base texlive-lang-german                     \
         texlive-latex-extra latex-make latex-mk latexdiff latexdraw         \
-        texlive-bibtex-extra nbibtex biber ingerman wngerman
+        texlive-bibtex-extra nbibtex biber ingerman wngerman make
 
 
 
@@ -62,10 +62,7 @@ RUN install -o 1000 -g 1000 -m 2777  -d ${EXCH_PATH}                        \
 USER ${USER_NAME}
 
 
-# Install Poky
-WORKDIR ${EXCH_PATH_INPUT}
-RUN git clone git://git.yoctoproject.org/poky
-
-
 ENTRYPOINT ["latexmk"]
 CMD ["main.tex"]
+
+#ENTRYPOINT ["make"]
