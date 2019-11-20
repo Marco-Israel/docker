@@ -67,7 +67,7 @@ USER ${USER_NAME}
 
 # Install Poky
 WORKDIR ${EXCH_PATH_INPUT}
-RUN git clone git://git.yoctoproject.org/poky
+#RUN git clone git://git.yoctoproject.org/poky
 
-
-CMD /bin/bash
+ENV PROJECT "build"
+CMD source sources/poky/oe-init-build-env ${PROJECT} && bitbake ${PROJECT} 
