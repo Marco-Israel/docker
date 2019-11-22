@@ -17,7 +17,7 @@ USER root
 
 
 ENV USER_NAME "latex"
-ENV EXCH_PATH "/$(USER_NAME}"
+ENV EXCH_PATH "/${USER_NAME}"
 ENV EXCH_PATH_INPUT "${EXCH_PATH}/input"
 ENV EXCH_PATH_OUTPUT "${EXCH_PATH}/output"
 ARG DEBIAN_FRONTEND=noninteractive
@@ -60,6 +60,7 @@ RUN install -o 1000 -g 1000 -m 2777  -d ${EXCH_PATH}                        \
 
 
 USER ${USER_NAME}
+WORKDIR ${EXCH_PATH_INPUT}
 
 
 ENTRYPOINT ["latexmk"]
