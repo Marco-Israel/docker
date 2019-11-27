@@ -10,7 +10,7 @@
 ################################################################################
 
 
-FROM ubuntu:16.04
+FROM ubuntu:19.04
 
 
 USER root
@@ -35,7 +35,7 @@ ENV LC_ALL en_US.UTF-8
 
 
 # Install packedes into the image
-RUN apt-get -y install gawk wget git-core diffstat unzip texinfo            \
+RUN apt-get -y install gawk wget git-core diffstat unzip texinfo apt-utils  \
         gcc-multilib build-essential chrpath socat cpio python python3      \
         python3-pip python3-pexpect xz-utils debianutils iputils-ping       \
         libsdl1.2-dev xterm curl vim bash-completion tree
@@ -48,7 +48,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*          \
         && useradd -u 1000 -g 1000 -ms /bin/bash ${USER_NAME}               \
         && usermod -a -G sudo ${USER_NAME}                                  \
         && usermod -a -G users ${USER_NAME}                                 \
-        && usermod --password ${USER_NAME} ${USER_NAME}                     \ 
+        && usermod --password ${USER_NAME} ${USER_NAME}                     \
         && usermod --password toor root
 
 
@@ -59,7 +59,7 @@ RUN curl -o /usr/local/bin/repo https://storage.googleapis.com/git-repo-download
 # Run as yocto  user from the installation path
 RUN install -o 1000 -g 1000 -m 2777  -d ${EXCH_PATH}                        \
         && install -o 1000 -g 1000 -m 2777 -d ${EXCH_PATH_INPUT}            \
-        && install -o 1000 -g 1000 -m 2777 -d ${EXCH_PATH_OUTPUT} 
+        && install -o 1000 -g 1000 -m 2777 -d ${EXCH_PATH_OUTPUT}
 
 
 USER ${USER_NAME}
@@ -70,4 +70,4 @@ WORKDIR ${EXCH_PATH_INPUT}
 #RUN git clone git://git.yoctoproject.org/poky
 
 ENV PROJECT "build"
-CMD source sources/poky/oe-init-build-env ${PROJECT} && bitbake ${PROJECT} 
+CMD source sources/poky/oe-init-build-env ${PROJECT} && bitbake ${PROJECT}
