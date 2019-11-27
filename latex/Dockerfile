@@ -61,6 +61,7 @@ RUN install -o 1000 -g 1000 -m 2777  -d ${EXCH_PATH}                        \
 
 
 USER ${USER_NAME}
+WORKDIR ${EXCH_PATH_INPUT}
 
 WORKDIR ${EXCH_PATH_INPUT}
 

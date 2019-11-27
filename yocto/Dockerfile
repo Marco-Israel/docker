@@ -49,7 +49,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*          \
         && useradd -u 1000 -g 1000 -ms /bin/bash ${USER_NAME}               \
         && usermod -a -G sudo ${USER_NAME}                                  \
         && usermod -a -G users ${USER_NAME}                                 \
-        && usermod --password ${USER_NAME} ${USER_NAME}                     \ 
+        && usermod --password ${USER_NAME} ${USER_NAME}                     \
         && usermod --password toor root
 
 
@@ -60,7 +60,7 @@ RUN curl -o /usr/local/bin/repo https://storage.googleapis.com/git-repo-download
 # Run as yocto  user from the installation path
 RUN install -o 1000 -g 1000 -m 2777  -d ${EXCH_PATH}                        \
         && install -o 1000 -g 1000 -m 2777 -d ${EXCH_PATH_INPUT}            \
-        && install -o 1000 -g 1000 -m 2777 -d ${EXCH_PATH_OUTPUT} 
+        && install -o 1000 -g 1000 -m 2777 -d ${EXCH_PATH_OUTPUT}
 
 
 USER ${USER_NAME}
@@ -73,3 +73,4 @@ WORKDIR ${EXCH_PATH_INPUT}
 ENV PROJECT "build"
 ENTRYPOINT source sources/poky/oe-init-build-env ${PROJECT} && bitbake
 CMD ${PROJECT}
+#CMD source sources/poky/oe-init-build-env ${PROJECT} && bitbake ${PROJECT}
