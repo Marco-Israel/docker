@@ -10,7 +10,7 @@
 ################################################################################
 
 
-FROM ubuntu:16.04
+FROM ubuntu:19.04
 
 
 USER root
@@ -35,10 +35,11 @@ ENV LC_ALL en_US.UTF-8
 
 
 # Install packedes into the image
-RUN apt-get -y install gawk wget git-core diffstat unzip texinfo            \
+RUN apt-get -y install gawk wget git diffstat unzip texinfo python2         \
         gcc-multilib build-essential chrpath socat cpio python python3      \
         python3-pip python3-pexpect xz-utils debianutils iputils-ping       \
-        libsdl1.2-dev xterm curl vim bash-completion tree
+        libsdl1.2-dev xterm curl vim bash-completion tree apt-utils         \
+        python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev  pylint 
 
 
 # Clean up APT when done and set shell and user options.
@@ -70,4 +71,5 @@ WORKDIR ${EXCH_PATH_INPUT}
 #RUN git clone git://git.yoctoproject.org/poky
 
 ENV PROJECT "build"
-CMD source sources/poky/oe-init-build-env ${PROJECT} && bitbake ${PROJECT} 
+ENTRYPOINT source sources/poky/oe-init-build-env ${PROJECT} && bitbake
+CMD ${PROJECT}

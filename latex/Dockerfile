@@ -36,8 +36,8 @@ ENV LC_ALL en_US.UTF-8
 
 
 # Install packedes into the image
-RUN apt-get -y install texlive-base texlive-lang-german                     \
-        texlive-latex-extra latex-make latexmk latexdiff latexdraw         \
+RUN apt-get -y install texlive-base texlive-lang-german apt-utils           \
+        texlive-latex-extra latex-make latexmk latexdiff latexdraw          \
         texlive-bibtex-extra nbibtex biber ingerman wngerman make           \
         texlive-fonts-extra vim
 
