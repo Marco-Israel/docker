@@ -70,5 +70,9 @@ USER ${USER_NAME}
 
 WORKDIR ${EXCH_PATH}
 
+<<<<<<< HEAD
 #ENTRYPOINT /bin/bash
+=======
+ENTRYPOINT /bin/bash
+>>>>>>> 38f504e901192485c127d9139cee85097cb90eab
 CMD [ "bash", "./dockerjob.sh"]
