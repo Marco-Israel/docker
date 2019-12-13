@@ -10,7 +10,7 @@
 ################################################################################
 
 
-FROM ubuntu:19.04
+FROM ubuntu:16.04
 
 
 USER root
@@ -23,7 +23,7 @@ ENV EXCH_PATH_OUTPUT "${EXCH_PATH}/output"
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Upgrade system and Yocto Proyect basic dependencies and set to locals
-RUN apt-get update && apt-get -y upgrade                                    \
+RUN apt-get update && apt-get -y upgrade && apt-get clean                   \
         && apt-get -y install locales apt-utils sudo                        \
         && dpkg-reconfigure locales                                         \
         && locale-gen en_US.UTF-8                                           \
@@ -35,11 +35,12 @@ ENV LC_ALL en_US.UTF-8
 
 
 # Install packedes into the image
-RUN apt-get -y install gawk wget git diffstat unzip texinfo python2         \
-        gcc-multilib build-essential chrpath socat cpio python python3      \
+RUN apt-get -y install gawk wget git diffstat unzip texinfo                 \ 
+        gcc-multilib build-essential chrpath socat cpio python3-lxml python3 \
         python3-pip python3-pexpect xz-utils debianutils iputils-ping       \
         libsdl1.2-dev xterm curl vim bash-completion tree apt-utils         \
-        python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev  pylint 
+        python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev  pylint       \
+         python python-lxml
 
 
 # Clean up APT when done and set shell and user options.
@@ -50,7 +51,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*          \
         && usermod -a -G sudo ${USER_NAME}                                  \
         && usermod -a -G users ${USER_NAME}                                 \
         && usermod --password ${USER_NAME} ${USER_NAME}                     \
-        && usermod --password toor root
+        && usermod --password toor root                                     \
+        && passwd -d root                                                   \
+        && passwd -d ${USER_NAME}                           
 
 
 # Install repo
@@ -65,12 +68,7 @@ RUN install -o 1000 -g 1000 -m 2777  -d ${EXCH_PATH}                        \
 
 USER ${USER_NAME}
 
+WORKDIR ${EXCH_PATH}
 
-# Install Poky
-WORKDIR ${EXCH_PATH_INPUT}
-#RUN git clone git://git.yoctoproject.org/poky
-
-ENV PROJECT "build"
-ENTRYPOINT source sources/poky/oe-init-build-env ${PROJECT} && bitbake
-CMD ${PROJECT}
-#CMD source sources/poky/oe-init-build-env ${PROJECT} && bitbake ${PROJECT}
+#ENTRYPOINT /bin/bash
+CMD [ "bash", "./dockerjob.sh"]
